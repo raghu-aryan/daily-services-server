@@ -1,4 +1,4 @@
-const db = require("../models");
+const db = require("../../models");
 const Tutorial = db.tutorials;
 const Op = db.Sequelize.Op;
 
@@ -34,7 +34,6 @@ exports.create = (req, res) => {
 
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
-  console.log('----------');
   const title = req.query.title;
   var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
 
@@ -53,7 +52,6 @@ exports.findAll = (req, res) => {
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
-
   Tutorial.findByPk(id)
     .then(data => {
       if (data) {
@@ -74,7 +72,6 @@ exports.findOne = (req, res) => {
 // Update a Tutorial by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
-
   Tutorial.update(req.body, {
     where: { id: id }
   })

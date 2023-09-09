@@ -1,17 +1,21 @@
-const db = require("../models");
-const Product = db.Product;
+const {Product} = require("../../models");
 
 module.exports = {
   store: async (req, res) => {
     try {
       const { title, description = '' } = req.body;
-      const productExit = await Product.findOne({ where: { title } });
-      if(!title) {
-        throw new Error('Title is required');
+      if (!title) {
+        res.status(400).send({
+          message: "Title can not be empty!"
+        });
+        return;
       }
-      console.log(productExit, 'productExitproductExit');
-      if(productExit) {
-        throw new Error(`Product ${productExit} already exist`);
+      const productExit = await Product.findOne({ where: { title } });
+      if (productExit) {
+        res.status(400).send({
+          message: `Product ${productExit?.title} already exist`
+        });
+        return;
       }
       const newProduct = Product.create({
         title, description
