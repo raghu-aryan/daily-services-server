@@ -1,4 +1,4 @@
-const {Product} = require("../../models");
+const { Product } = require("../../models");
 
 module.exports = {
   store: async (req, res) => {
@@ -42,6 +42,64 @@ module.exports = {
       res.json({ status: true, data: activeProducts });
     } catch (error) {
       throw error;
+    }
+  },
+
+  getOne: async (req, res) => {
+    try {
+      const id = req.params.id;
+      if (!id) {
+        res.status(400).send({
+          message: "Id can not be empty!"
+        });
+        return;
+      }
+      const product = await Product.findByPk(id);
+      res.json({ status: true, data: product });
+    } catch (error) {
+      return error
+    }
+  },
+
+  updateOne: async (req, res) => {
+    try {
+      const id = req.params.id;
+      if (!id) {
+        res.status(400).send({
+          message: "Id can not be empty!"
+        });
+        return;
+      }
+      const product = await Product.findByPk(id);
+      if (!product) {
+        res.status(400).send({
+          message: `Product not exist`
+        });
+        return;
+      }
+      product.title = 'update to date';
+      const updateProduct = await product.save();
+      res.json({ status: true, data: updateProduct });
+    } catch (error) {
+      return error;
+    }
+  },
+
+  destroyOne: async (req, res) => {
+    try {
+      const id = req.params.id;
+      if(!id){
+        res.status(400).send({
+          message: "Id can not be empty!"
+        });
+        return;
+      }
+      await User.destroy({
+        id: id
+      });
+      res.json({ status: true, data: id });
+    } catch (error) {
+      return error;
     }
   }
 }
