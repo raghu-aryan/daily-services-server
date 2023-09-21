@@ -6,23 +6,29 @@ module.exports = {
       const { title, description = '' } = req.body;
       if (!title) {
         res.status(400).send({
-          message: "Title can not be empty!"
+          status: false,
+          error: "Title can not be empty!"
         });
         return;
       }
       const productExit = await Product.findOne({ where: { title } });
       if (productExit) {
         res.status(400).send({
-          message: `Product ${productExit?.title} already exist`
+          status: false,
+          error: `Product ${productExit?.title} already exist`
         });
         return;
       }
-      const newProduct = Product.create({
+      const newProduct = await Product.create({
         title, description
       })
       res.json({ status: true, data: newProduct })
     } catch (error) {
-      throw error;
+      res.status(400).send({
+        status: false,
+        error: error
+      });
+      return;
     }
   },
 
@@ -88,7 +94,7 @@ module.exports = {
   destroyOne: async (req, res) => {
     try {
       const id = req.params.id;
-      if(!id){
+      if (!id) {
         res.status(400).send({
           message: "Id can not be empty!"
         });

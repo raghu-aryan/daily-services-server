@@ -13,9 +13,18 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   }
 });
 
+const User = require("./User.js")(sequelize);
+const Product = require("./Product.js")(sequelize);
+//const UserProduct = require("./UserProduct.js")(sequelize);
+User.hasMany(Product);
+Product.belongsTo(User);
+//UserProduct.hasOne(User);
+//UserProduct.hasOne(Product);
+
 module.exports = {
   Sequelize: Sequelize,
   sequelize: sequelize,
-  User: require("./User.js")(sequelize),
-  Product: require("./Product.js")(sequelize),
+  User,
+  Product,
+  //UserProduct: require("./UserProduct.js")(sequelize),
 }

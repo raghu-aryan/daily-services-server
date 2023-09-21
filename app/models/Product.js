@@ -2,6 +2,11 @@ const { DataTypes } = require("sequelize")
 
 module.exports = (sequelize) => {
   const Product = sequelize.define("product", {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
     title: {
       type: DataTypes.STRING
     },
@@ -16,6 +21,5 @@ module.exports = (sequelize) => {
       defaultValue: false
     }
   });
-
   return Product;
 };

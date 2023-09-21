@@ -1,7 +1,13 @@
-const { DataTypes } = require("sequelize")
+const { DataTypes } = require("sequelize");
+const Product = require("./Product");
 
 module.exports = (sequelize) => {
   const User = sequelize.define("user", {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
     password: {
       type: DataTypes.STRING,
       alowNull: true,
@@ -36,5 +42,7 @@ module.exports = (sequelize) => {
       defaultValue: 'user'
     }
   });
+  //User.hasMany(Product);
+
   return User;
 };
